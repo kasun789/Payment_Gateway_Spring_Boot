@@ -2,11 +2,9 @@ package com.falcon.PaymentGateway.Controller;
 
 import com.falcon.PaymentGateway.Model.PaymentDetail;
 import com.falcon.PaymentGateway.Service.PaymentService;
+import com.falcon.PaymentGateway.dto.PaymentDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/paymentProcess")
@@ -19,17 +17,17 @@ public class PaymentController {
     }
 
     @PostMapping("/checkOut")
-    public String checkOutPayment(@RequestParam("token") String token,@RequestParam("amount")  double amount,@RequestParam("systemUserId")  int systemUserId,@RequestParam("currency")  String currency){
+    public String checkOutPayment(@RequestBody PaymentDto paymentDto){
         PaymentDetail paymentDetail = new PaymentDetail();
-        paymentDetail.setCurrency(currency);
-        paymentDetail.setAmount(amount);
+        paymentDetail.setCurrency(paymentDto.getCurrency());
+        paymentDetail.setAmount(paymentDto.getAmount());
         paymentDetail.setSystemUserId(1);
         try{
-            paymentService.savePayment(token,paymentDetail);
+            paymentService.savePayment(paymentDto.getToken(),paymentDetail);
             return "Payment Successfully Done";
         }
         catch (Exception ex) {
-            return "Payment Successfully Done";
+            return "Payment UnSuccessfully Done";
         }
     }
 }
