@@ -6,8 +6,12 @@ import com.falcon.PaymentGateway.dto.PaymentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/paymentProcess")
+@CrossOrigin
 public class PaymentController {
     private PaymentService paymentService;
 
@@ -17,17 +21,14 @@ public class PaymentController {
     }
 
     @PostMapping("/checkOut")
-    public String checkOutPayment(@RequestBody PaymentDto paymentDto){
+    public Map<String,Object> checkOutPayment(@RequestBody PaymentDto paymentDto){
+        Map<String,Object> response = new HashMap<>();
         PaymentDetail paymentDetail = new PaymentDetail();
         paymentDetail.setCurrency(paymentDto.getCurrency());
         paymentDetail.setAmount(paymentDto.getAmount());
         paymentDetail.setSystemUserId(1);
-        try{
-            paymentService.savePayment(paymentDto.getToken(),paymentDetail);
-            return "Payment Successfully Done";
-        }
-        catch (Exception ex) {
-            return "Payment UnSuccessfully Done";
-        }
+
+        response = paymentService.savePayment(paymentDto.getToken(),paymentDetail);
+        return response;
     }
 }

@@ -2,6 +2,8 @@ package com.falcon.PaymentGateway.Service;
 
 import com.falcon.PaymentGateway.Model.PaymentDetail;
 
+import java.util.Map;
+
 public interface PaymentService {
-    void savePayment(String token,PaymentDetail paymentDetail);
+    Map<String, Object> savePayment(String token, PaymentDetail paymentDetail);
 }
